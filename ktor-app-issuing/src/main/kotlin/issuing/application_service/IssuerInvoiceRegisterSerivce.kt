@@ -26,7 +26,7 @@ object IssuerInvoiceRegisterService {
 //        RecipientRepository.getOrNUll(args.recipientUUID, handle)
 //          ?: return@runInTransaction ApplicationResult.Failure("Recipient Not Found")
 
-            //  IssuerInvoiceRepository.register(issuerInvoice, handle)
+//              IssuerInvoiceRepository.register(issuerInvoice, handle)
 
             ApplicationResult.Success
         }

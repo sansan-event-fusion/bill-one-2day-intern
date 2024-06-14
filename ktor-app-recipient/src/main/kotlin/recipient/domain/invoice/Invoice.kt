@@ -18,8 +18,7 @@ data class Invoice(
     val supplierName: SupplierName?,
     val paymentDeadline: PaymentDeadline?,
     val registeredBy: RegisteredBy,
-    // todo updated at
-    val registeredAt: RegisteredAt
+    val registeredAt: RegisteredAt,
 ) {
     companion object {
         fun of(

@@ -102,9 +102,3 @@ export const InvoiceIssueForm: FC<InvoiceIssueFormProps> = ({
     </div>
   );
 };
-
-// TODO:
-// 1. フォームでアカウントを選択する状態で実装する。
-// 2. フォームのアカウント選択をlocalStorageに置き換える。
-// 3. 受領、発行どちらにもそれを適用できるようにする。
-// 4. それを全てAPI呼び出しに適用する。

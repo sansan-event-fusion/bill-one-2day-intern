@@ -60,5 +60,3 @@ export const RecipientInvoicesTable: FC<RecipientInvoicesTableProps> = ({
     </>
   );
 };
-
-//当日スムーズに課題に取り組んでいただくため、インターン中に使用する言語・技術について、事前学習をしていただきたく存じます。
