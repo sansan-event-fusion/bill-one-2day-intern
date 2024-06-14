@@ -1,4 +1,47 @@
-# bill-one-2024-summer
+# bill-one-2days-internship
+
+## 前提条件
+
+### Docker Desktop
+
+[公式ドキュメント](https://docs.docker.com/get-docker/)を参考に最新の Docker Desktop をインストールしてください。
+
+### JDK11
+
+#### macOS
+
+[Homebrew](https://brew.sh/index_ja)を用いてインストールできます。
+インストール時に出力されるメッセージを参考に PATH を通してください。
+
+```shell
+brew install openjdk@11
+```
+
+#### Windows
+
+winget を用いてインストールできます。
+
+参考: [Microsoft Build of OpenJDK をインストールする](https://docs.microsoft.com/ja-jp/java/openjdk/install#install-with-the-windows-package-manager)
+
+```shell
+winget install Microsoft.OpenJDK.11
+```
+
+### PostgreSQL
+
+`psql` コマンドを用いてサンプルデータをインポートするため、PostgreSQL をインストールします。
+
+#### macOS
+
+```shell
+brew install postgresql
+```
+
+#### Windows
+
+```shell
+winget install PostgreSQL.PostgreSQL
+```
 
 # リポジトリ構成
 
