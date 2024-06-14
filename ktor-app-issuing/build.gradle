@@ -1,0 +1,164 @@
+import java.nio.charset.StandardCharsets
+
+plugins {
+    id("application")
+    id("java")
+    id 'org.jetbrains.kotlin.jvm' version '1.9.23'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.23'
+    id 'io.ktor.plugin' version '2.3.9'
+    id("org.flywaydb.flyway") version "9.22.3"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    // for unicode/icu4j
+    maven {
+        url = uri("https://repo1.maven.org/maven2/")
+    }
+    // for client
+    maven {
+        url "https://maven.pkg.jetbrains.space/public/p/ktor/eap"
+    }
+    maven {
+        url "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev"
+    }
+}
+
+group "billone.sansan.com"
+version "0.0.1-SNAPSHOT"
+kotlin_version = "1.9.23"
+ktor_version = "2.3.9"
+logback_version = "1.5.0"
+logback_contrib_version = "0.1.5"
+hikari_cpv_version = "5.0.1"
+postgres_version = "42.7.1"
+jdbi_version = "3.45.1"
+gcp_postgres_version = "1.14.1"
+gcp_storage_version = "2.34.0"
+gcp_task_version = "2.35.0"
+csv_version = "5.7.1"
+unicode_version = "74.2"
+jackson_version = "2.16.1"
+pdf_image_version = "3.0.3"
+image_io_version = "1.4.0"
+// test
+junit_version = "5.10.2"
+assertj_version = "3.25.3"
+db_setup_version = "2.1.0"
+mockk_version = "1.13.9"
+json_fuzzy_match_version = "0.6.0"
+
+
+dependencies {
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // Ktor
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "io.ktor:ktor-server-resources:$ktor_version"
+    implementation "io.ktor:ktor-server-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-serialization-jackson:$ktor_version"
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-server-core-jvm"
+    implementation "io.ktor:ktor-server-call-id:$ktor_version"
+    implementation "io.ktor:ktor-server-call-logging:$ktor_version"
+    implementation "io.ktor:ktor-server-cors:$ktor_version"
+
+    // Jackson（オブジェクト↔︎JSONの変換）
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
+
+    //  ログ
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation "ch.qos.logback.contrib:logback-json-classic:$logback_contrib_version"
+    implementation "ch.qos.logback.contrib:logback-jackson:$logback_contrib_version"
+
+    // DB
+    implementation "org.postgresql:postgresql:$postgres_version"
+    implementation "com.zaxxer:HikariCP:$hikari_cpv_version"
+    implementation platform("org.jdbi:jdbi3-bom:$jdbi_version")
+    implementation "org.jdbi:jdbi3-core"
+    implementation "org.jdbi:jdbi3-kotlin"
+    implementation "org.jdbi:jdbi3-postgres"
+    implementation "org.jdbi:jdbi3-jackson2"
+    // GCP
+    implementation "com.google.cloud.sql:postgres-socket-factory:$gcp_postgres_version"
+    implementation "com.google.cloud:google-cloud-storage:$gcp_storage_version"
+    implementation "com.google.cloud:google-cloud-tasks:$gcp_task_version"
+    // CSV
+    implementation "com.opencsv:opencsv:$csv_version"
+    // Unicode
+    implementation "com.ibm.icu:icu4j:$unicode_version"
+    // PDF
+    implementation "com.github.jai-imageio:jai-imageio-core:$image_io_version"
+    implementation "com.github.jai-imageio:jai-imageio-jpeg2000:$image_io_version"
+    implementation "org.apache.pdfbox:jbig2-imageio:$pdf_image_version"
+    // 共通ライブラリ
+    implementation 'com.sansan.billone:summer-kotlin-lib:0.1.0'
+
+    // Test
+    testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
+    testImplementation "org.assertj:assertj-core:$assertj_version"
+    testImplementation "com.ninja-squad:DbSetup-kotlin:$db_setup_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation "io.github.orangain:json-fuzzy-match:${json_fuzzy_match_version}"
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation "io.ktor:ktor-server-test-host:$ktor_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testImplementation("org.assertj:assertj-core:$assertj_version")
+    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktor_version") {
+        exclude group: "junit", module: "junit"
+    }
+    testImplementation "com.ninja-squad:DbSetup-kotlin:$db_setup_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+kotlin {
+    jvmToolchain(21)
+}
+application {
+    mainClassName = "io.ktor.server.netty.EngineMain"
+    applicationDefaultJvmArgs = ["-Dio.ktor.development=true"]
+}
+
+
+tasks.named("run", JavaExec) {
+    if (file("$rootDir/src/main/resources/logback-local.xml").exists()) {
+        // this property name is defined in logback library https://github.com/qos-ch/logback/blob/407f935603f3f4d7825e4f57f85ed494da3b7197/logback-classic/src/main/java/ch/qos/logback/classic/ClassicConstants.java#L25
+        systemProperties.put("logback.configurationFile", "logback-local.xml")
+        println("logback-local.xml found so it will be used.")
+    }
+
+    def noPretty = project.findProperty("noPretty")
+    if (!noPretty) {
+        // JSONのログを見やすく出力する
+        doFirst {
+            def pinoCmd = System.getProperty("os.name").toLowerCase().startsWith("win") ? "pino-pretty.cmd" : "pino-pretty"
+            def process
+            try {
+                process = new ProcessBuilder(pinoCmd).start() // 設定は .pino-prettyrc から読まれる。
+            } catch (IOException ex) {
+                project.logger.warn("Failed to start pino-pretty. Starting without pino-pretty.")
+                return
+            }
+            standardOutput = process.outputStream // 起動するJavaアプリケーションの標準出力をpino-prettyの標準入力に結びつける。
+
+            // ProcessBuilder で redirectOutput(ProcessBuilder.Redirect.INHERIT) としても標準出力に表示されない。
+            // 仕方ないので別スレッドでプロセスの標準出力を読み出してはprintする。InputStreamReaderを使わないと日本語が文字化けした。
+            Thread.start {
+                new InputStreamReader(process.inputStream, StandardCharsets.UTF_8).withCloseable { reader ->
+                    int value
+                    while ((value = reader.read()) != -1) {
+                        print((char) value)
+                    }
+                }
+            }
+        }
+    }
+}

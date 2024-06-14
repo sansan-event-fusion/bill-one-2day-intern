@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="11">
+      <module name="billone.sansan.com" target="21" />
+      <module name="billone.sansan.com.ktor-app-issuing" target="21" />
+      <module name="billone.sansan.com.ktor-app-issuing.main" target="21" />
+      <module name="billone.sansan.com.ktor-app-issuing.test" target="21" />
+      <module name="billone.sansan.com.ktor-app-recipient" target="21" />
+      <module name="billone.sansan.com.ktor-app-recipient.main" target="21" />
+      <module name="billone.sansan.com.ktor-app-recipient.test" target="21" />
+      <module name="billone.sansan.com.main" target="21" />
+      <module name="billone.sansan.com.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

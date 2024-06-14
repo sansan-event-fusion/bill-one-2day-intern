@@ -1,0 +1,6 @@
+{
+  "colorize": true,
+  "messageKey": "message",
+  "levelKey": "severity",
+  "ignore": "logging.googleapis.com/trace,logging.googleapis.com/spanId,logging.googleapis.com/trace_sampled"
+}

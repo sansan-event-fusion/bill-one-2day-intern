@@ -1,0 +1,15 @@
+{
+  "tenantNameId": "yonyon",
+  "issuerInvoiceUUID": "c1db1d45-8937-4718-b057-02c16039bf37",
+  "issuerUUID": "2731b723-2aea-446e-b718-6b9626e103bc",
+  "issuerName": "株式会社yonyon",
+  "issuerOrganizationName": null,
+  "recipientUUID": "015bdd8a-9aee-4545-8e4b-95b48a482559",
+  "recipientName": "テスト受領者",
+  "recipientOrganizationName": null,
+  "issuerRegistrationNumber": "T0000000000000",
+  "invoiceTaxExcludedAmount": "10000",
+  "taxRate": "10",
+  "invoiceNumber": "inv-0001",
+  "paymentDueDate": "2023-01-23"
+}
