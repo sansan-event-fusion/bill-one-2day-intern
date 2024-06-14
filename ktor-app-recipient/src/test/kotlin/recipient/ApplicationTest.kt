@@ -10,7 +10,6 @@ import recipient.testing.Database
 import recipient.testing.testSettings
 
 class ApplicationTest {
-
     companion object {
         private val schemaName = this::class.java.declaringClass.simpleName.lowercase()
         private val settings = testSettings(schemaName)
@@ -29,14 +28,14 @@ class ApplicationTest {
     }
 
     @Test
-    fun testIndex() = testApp {
-        handleRequest(HttpMethod.Get, "/") {
-        }.apply {
-            // 今は何もmigrationがないからね
-            assertThat(response.status()?.value).isEqualTo(200)
-            assertThat(response.content!!).isEqualTo("bill-one-1day-intern kotlin-app-recipient is up!")
+    fun testIndex() =
+        testApp {
+            handleRequest(HttpMethod.Get, "/") {
+            }.apply {
+                assertThat(response.status()?.value).isEqualTo(200)
+                assertThat(response.content!!).isEqualTo("bill-one-1day-intern kotlin-app-recipient is up!")
+            }
         }
-    }
 
     private fun testApp(callback: TestApplicationEngine.() -> Unit) {
         withTestApplication({ module(true, settings) }) { callback() }

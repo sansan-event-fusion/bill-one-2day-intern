@@ -1,7 +1,6 @@
 import { useLocalStorage } from "src/util/useLocalStorage";
 
 // 便宜的にutilに配置する。
-// 今日通過したかっただけ。
 export const useAuth = () => {
   const { get, set } = useLocalStorage();
 

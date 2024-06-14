@@ -60,5 +60,3 @@ export const RecipientInvoicesTable: FC<RecipientInvoicesTableProps> = ({
     </>
   );
 };
-
-
