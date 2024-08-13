@@ -16,6 +16,12 @@ object InvoiceUploadService {
         multipartData: MultiPartData,
         domainEventContext: DomainEventContext,
     ): ApplicationResult {
+        //HINT: var pdfBytes
+
+
+
+
+
         //  TODO: 課題4
         //  val invoice =
 

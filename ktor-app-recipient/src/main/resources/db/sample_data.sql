@@ -21,4 +21,8 @@ VALUES ('gogo', '2731b723-2aea-446e-b718-6b9626e103bc', 'gogo発行のみ', 'iss
        ('yonyon', '72666a07-04bc-4791-a996-f19eab4772a2', 'yonyon次郎', 'jiro@yonyon.com'),
        ('rokuroku', 'a587cd2b-f77c-407d-bb45-f7db7c395758', 'rokuroku小太郎', 'kotaro@rokuroku.com');
 
+INSERT INTO invoice (tenant_name_id, invoice_uuid, recipient_uuid, registered_by, registered_at)
+VALUES ('yonyon', 'd6cefb8c-ecb0-438e-b025-28d092049259', '015bdd8a-9aee-4545-8e4b-95b48a482559', 'RECEIVE',
+        '2021-01-01 00:00:00+09:00');
+
 COMMIT;

@@ -10,7 +10,10 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
 import recipient.domain.tenant.TenantNameId
-import recipient.fixture.*
+import recipient.fixture.RecipientTableFixture
+import recipient.fixture.TenantTableFixture
+import recipient.fixture.insertRecipient
+import recipient.fixture.insertTenant
 import recipient.module
 import recipient.testing.Database
 import recipient.testing.testSettings
@@ -74,21 +77,30 @@ class InvoiceControllerPostTest {
                             )
                         ),
                         PartData.FormItem(
-                            RecipientTableFixture().recipientUuid.toString(),
+                            tenant.tenantUuid.toString(),
                             {},
                             headersOf(
                                 HttpHeaders.ContentDisposition,
                                 ContentDisposition.Inline
-                                    .withParameter(ContentDisposition.Parameters.Name, "recipientUUID").toString()
+                                    .withParameter(ContentDisposition.Parameters.Name, "supplierUUID").toString()
                             )
                         ),
                         PartData.FormItem(
-                            InvoiceTableFixture().invoiceUuid.toString(),
+                            tenant.tenantNameId,
                             {},
                             headersOf(
                                 HttpHeaders.ContentDisposition,
                                 ContentDisposition.Inline
-                                    .withParameter(ContentDisposition.Parameters.Name, "senderUUID").toString()
+                                    .withParameter(ContentDisposition.Parameters.Name, "supplierName").toString()
+                            )
+                        ),
+                        PartData.FormItem(
+                            "1000",
+                            {},
+                            headersOf(
+                                HttpHeaders.ContentDisposition,
+                                ContentDisposition.Inline
+                                    .withParameter(ContentDisposition.Parameters.Name, "invoiceAmount").toString()
                             )
                         )
                     )
