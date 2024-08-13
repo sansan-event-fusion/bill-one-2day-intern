@@ -21,7 +21,7 @@ object RecipientQueryService {
             val recipients = handle.createQuery(RecipientRow.allRecipientSql())
                 .bind("tenantNameId", tenantNameId.value)
                 .mapTo(RecipientRow::class.java)
-                .set()
+                .list()
 
             RecipientsQueryResult.fromRow(recipients)
         }
@@ -45,9 +45,11 @@ data class RecipientRow(
                     email
                 FROM
                     recipient
-                where
+                WHERE
                     tenant_name_id = :tenantNameId
                     and recipient_uuid = :recipientUUID
+                ORDER BY
+                    full_name ASC
             """.trimIndent()
         }
 
@@ -72,10 +74,10 @@ data class RecipientRow(
 }
 
 data class RecipientsQueryResult(
-    val recipients: Set<RecipientRow>
+    val recipients: List<RecipientRow>
 ) {
     companion object {
-        fun fromRow(row: Set<RecipientRow>): RecipientsQueryResult {
+        fun fromRow(row: List<RecipientRow>): RecipientsQueryResult {
             return RecipientsQueryResult(
                 recipients = row
             )
