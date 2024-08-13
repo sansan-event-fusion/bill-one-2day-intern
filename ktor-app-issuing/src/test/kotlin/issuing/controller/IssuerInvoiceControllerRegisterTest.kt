@@ -1,8 +1,13 @@
 package issuing.controller
 
+import com.google.cloud.tasks.v2.CloudTasksClient
+import com.google.cloud.tasks.v2.CloudTasksSettings
+import com.google.cloud.tasks.v2.Task
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import io.mockk.*
 import issuing.domain.tenant.TenantNameId
+import issuing.domain_event.DomainEventRow
 import issuing.fixture.*
 import issuing.infrastructure.IssuerInvoiceRow
 import issuing.module
@@ -50,6 +55,12 @@ class IssuerInvoiceControllerRegisterTest {
                 recipient = insertRecipient("受領者1", "recipient@email.com")
             }
         }
+
+        mockkStatic(CloudTasksClient::class)
+        every { CloudTasksClient.create(any<CloudTasksSettings>()).close() } just Runs
+        every {
+            CloudTasksClient.create(any<CloudTasksSettings>()).createTask(any<String>(), any())
+        } returns Task.newBuilder().build()
     }
 
     @Test
@@ -82,6 +93,14 @@ class IssuerInvoiceControllerRegisterTest {
                     assertThat(issuerInvoiceRow.uploadedFileStoragePath).isEqualTo(null)
                     assertThat(issuerInvoiceRow.invoiceAmount).isEqualTo(1000)
                     assertThat(issuerInvoiceRow.recipientUUID).isEqualTo(recipient.recipientUuid)
+                    // add domainEvent test
+                    val domainEventRow =
+                        handle
+                            .createQuery("SELECT * FROM domain_event")
+                            .mapTo<DomainEventRow>()
+                            .one()
+                    assertThat(domainEventRow.domainEventName).isEqualTo("issuing.domain_event.IssuerInvoiceRegistered")
+
                 }
             }
         }
@@ -108,6 +127,10 @@ class IssuerInvoiceControllerRegisterTest {
                 },
             ) {
                 assertThat(response.status()).isEqualTo(HttpStatusCode.BadRequest)
+                verify(exactly = 0) {
+                    CloudTasksClient.create(any<CloudTasksSettings>())
+                        .createTask(any<String>(), any())
+                } // ドメインイベントのタスクが作られていない
             }
         }
 }
