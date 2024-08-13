@@ -28,7 +28,9 @@ class IssuerInvoiceControllerRegisterTest {
 
     companion object {
         // setup for test
-        private val schemaName = this::class.java.declaringClass.simpleName.lowercase()
+        private val schemaName =
+            this::class.java.declaringClass.simpleName
+                .lowercase()
         private val settings = testSettings(schemaName)
         private val database = Database(settings, schemaName)
 
@@ -87,8 +89,10 @@ class IssuerInvoiceControllerRegisterTest {
                 assertThat(response.status()).isEqualTo(HttpStatusCode.OK)
                 withHandle(tenantNameId = TenantNameId("yonyon")) { handle ->
                     val issuerInvoiceRow =
-                        handle.createQuery("SELECT * FROM issuer_invoice")
-                            .mapTo<IssuerInvoiceRow>().one()
+                        handle
+                            .createQuery("SELECT * FROM issuer_invoice")
+                            .mapTo<IssuerInvoiceRow>()
+                            .one()
 
                     assertThat(issuerInvoiceRow.uploadedFileStoragePath).isEqualTo(null)
                     assertThat(issuerInvoiceRow.invoiceAmount).isEqualTo(1000)
@@ -100,7 +104,6 @@ class IssuerInvoiceControllerRegisterTest {
                             .mapTo<DomainEventRow>()
                             .one()
                     assertThat(domainEventRow.domainEventName).isEqualTo("issuing.domain_event.IssuerInvoiceRegistered")
-
                 }
             }
         }
@@ -128,7 +131,8 @@ class IssuerInvoiceControllerRegisterTest {
             ) {
                 assertThat(response.status()).isEqualTo(HttpStatusCode.BadRequest)
                 verify(exactly = 0) {
-                    CloudTasksClient.create(any<CloudTasksSettings>())
+                    CloudTasksClient
+                        .create(any<CloudTasksSettings>())
                         .createTask(any<String>(), any())
                 } // ドメインイベントのタスクが作られていない
             }

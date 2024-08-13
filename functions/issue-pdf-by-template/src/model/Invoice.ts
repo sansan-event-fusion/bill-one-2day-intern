@@ -7,6 +7,8 @@ import {InvoiceAmountInfo} from "./InvoiceAmountInfo";
 export type Invoice ={
     title: Title
     issuerInvoiceUUID: string,
+    tenantNameId: string,
+    recipientTenantNameId: string,
     recipientInfo: RecipientInfo
     issuerInfo:IssuerInfo
     invoiceAmountInfo:InvoiceAmountInfo

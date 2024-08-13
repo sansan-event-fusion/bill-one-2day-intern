@@ -7,23 +7,25 @@ export const RequestJsonToInvoice = (requestJson: RequestJson): Invoice => {
 
     return {
         title: new Title("請求書"),
+        tenantNameId: requestJson.tenantNameId,
+        recipientTenantNameId: requestJson.recipientTenantNameId,
         issuerInvoiceUUID: requestJson.issuerInvoiceUUID,
         recipientInfo:{
             recipientName:requestJson.recipientName,
-            recipientOrganizationName:requestJson.recipientOrganizationName ?? null
+            recipientOrganizationName:requestJson.recipientEmail ?? null
         },
         issuerInfo:{
             issuerName:requestJson.issuerName,
-            issuerOrganizationName:requestJson.issuerOrganizationName ?? null,
+            issuerOrganizationName:requestJson.issuerEmail ?? null,
             issuerRegistrationNumber:"T1234567890123"
         },
         paymentInfo:{
-            amount: requestJson.invoiceTaxExcludedAmount,
+            amount: requestJson.invoiceAmount,
             publishedAt:new Date(),
             paymentDueDate: new Date(Date.parse(requestJson.paymentDueDate))
         },
         invoiceAmountInfo: new InvoiceAmountInfo(
-            requestJson.taxRate as InvoiceTaxRate,
-            requestJson.invoiceTaxExcludedAmount)
-        }
+            "10",
+            requestJson.invoiceAmount)
+    }
 }

@@ -10,6 +10,7 @@ let tasksClient: CloudTasksClient
 
 
 type CreateRequestIssuingArgs = {
+    tenantNameId: string,
     generatedInvoiceUUID: string,
     issuerUUID: string,
     generateResult: Result,
@@ -21,6 +22,7 @@ type CreateRequestRecipientArgs = {
     generateResult: Result,
     issuerUUID: string,
     issuerName: string,
+    recipientTenantNameId: string,
     recipientUUID: string,
     invoiceAmount: number,
     paymentDeadline: string,
@@ -34,6 +36,7 @@ export const createCloudTasks = async ({
     generateResult: Result
 }): Promise<void> => {
     const requestToIssuing = createRequestIssuing({
+        tenantNameId: body.tenantNameId,
         generatedInvoiceUUID: body.issuerInvoiceUUID,
         issuerUUID: body.issuerUUID,
         generateResult,
@@ -43,8 +46,9 @@ export const createCloudTasks = async ({
         generatedInvoiceUUID: body.issuerInvoiceUUID,
         issuerUUID: body.issuerUUID,
         issuerName: body.issuerName,
+        recipientTenantNameId: body.recipientTenantNameId,
         recipientUUID: body.recipientUUID,
-        invoiceAmount: body.invoiceTaxExcludedAmount,
+        invoiceAmount: body.invoiceAmount,
         paymentDeadline: body.paymentDueDate,
         generateResult,
     })
@@ -97,6 +101,7 @@ export const createCloudTasks = async ({
 }
 
 const createRequestIssuing = ({
+                                  tenantNameId: tenantNameId,
                                   generatedInvoiceUUID: generatedInvoiceUUID,
                                   generateResult,
                                   issuerUUID
@@ -118,7 +123,7 @@ const createRequestIssuing = ({
                 httpMethod: protos.google.cloud.tasks.v2.HttpMethod.POST,
                 url: getEnv("CLOUD_TASKS_CALLBACK_URL_ISSUING", "http://127.0.0.1:8082/event-handler/issuing/invoices/reflect-issued-result"),
                 headers: {
-                    "X-Tenant-Name-Id": "yonyon",
+                    "X-Tenant-Name-Id": `${tenantNameId}`,
                     "X-Cloud-Trace-Context": `${uuidv4().replace(/-/g, "")}/0`,
                     "Content-Type": "application/json",
                 },
@@ -131,7 +136,7 @@ const createRequestIssuing = ({
 
 const createRequestRecipient = (
     {
-        issuedTenantNameId,
+        recipientTenantNameId,
         generatedInvoiceUUID,
         generateResult,
         issuerUUID,
@@ -141,7 +146,7 @@ const createRequestRecipient = (
         paymentDeadline
     }: CreateRequestRecipientArgs): protos.google.cloud.tasks.v2.ICreateTaskRequest => {
     const requestBody = JSON.stringify({
-        tenantNameId: issuedTenantNameId,
+        tenantNameId: recipientTenantNameId,
         generatedInvoiceUUID: generatedInvoiceUUID,
         generatedResult: generateResult,
         issuerUUID: issuerUUID,
@@ -165,7 +170,7 @@ const createRequestRecipient = (
                 httpMethod: protos.google.cloud.tasks.v2.HttpMethod.POST,
                 url: getEnv("CLOUD_TASKS_CALLBACK_URL_RECIPIENT", "http://127.0.0.1:8081/event-handler/recipient/invoices/reflect-issued-result"),
                 headers: {
-                    "X-Tenant-Name-Id": "yonyon",
+                    "X-Tenant-Name-Id": `${recipientTenantNameId}`,
                     "X-Cloud-Trace-Context": `${uuidv4().replace(/-/g, "")}/0`,
                     "Content-Type": "application/json",
                 },
