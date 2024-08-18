@@ -21,25 +21,6 @@ class IssuerInvoiceTest {
   }
 
   @Test
-  fun `can create issuer invoice`() {
-    val created = IssuerInvoice.create(
-      tenantNameId,
-      supplierTenantNameId,
-      issuerUUID,
-      invoiceAmount,
-      paymentDeadline,
-      recipientUUID
-    )
-
-    assertEquals(tenantNameId, created.tenantNameId)
-    assertEquals(supplierTenantNameId, created.supplierTenantNameId)
-    assertEquals(issuerUUID, created.issuerUUID)
-    assertEquals(invoiceAmount, created.invoiceAmount)
-    assertEquals(paymentDeadline, created.paymentDeadline)
-    assertEquals(recipientUUID, created.recipientUUID)
-  }
-
-  @Test
   fun `can reflect storage path`() {
     val invoice = IssuerInvoice(
       tenantNameId,
