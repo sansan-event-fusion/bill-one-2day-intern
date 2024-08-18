@@ -38,24 +38,6 @@ data class IssuerInvoice(
             recipientUUID = recipientUUID,
             uploadedFileStoragePath = uploadedFileStoragePath,
         )
-
-        fun create(
-            tenantNameId: TenantNameId,
-            supplierTenantNameId: TenantNameId,
-            issuerUUID: IssuerUUID,
-            invoiceAmount: InvoiceAmount,
-            paymentDeadline: PaymentDeadline,
-            recipientUUID: RecipientUUID,
-        ) = IssuerInvoice(
-            issuerInvoiceUUID = IssuerInvoiceUUID.of(),
-            supplierTenantNameId = supplierTenantNameId,
-            issuerUUID = issuerUUID,
-            invoiceAmount = invoiceAmount,
-            paymentDeadline = paymentDeadline,
-            recipientUUID = recipientUUID,
-            tenantNameId = tenantNameId,
-            uploadedFileStoragePath = null,
-        )
     }
 
     fun reflectIssueResult(uploadedFileStoragePath: UploadedFileStoragePath) = this.copy(uploadedFileStoragePath = uploadedFileStoragePath)
